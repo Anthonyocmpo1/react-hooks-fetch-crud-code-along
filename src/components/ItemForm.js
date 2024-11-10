@@ -1,11 +1,29 @@
 import React, { useState } from "react";
 
-function ItemForm() {
+function ItemForm({ onAddItem }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Produce");
 
+  const handleSubmit = (e) => {
+    e.preventDefault();  // Prevent the default form submission behavior
+
+    const newItem = {
+      id: Date.now(),  // Use the current timestamp as a unique ID (or generate one from your backend)
+      name,
+      category,
+      isInCart: false,  // Default value for isInCart
+    };
+
+    // Call the callback function passed from the parent to add the new item
+    onAddItem(newItem);
+
+    // Clear form after submitting
+    setName("");
+    setCategory("Produce");
+  };
+
   return (
-    <form className="NewItem">
+    <form className="NewItem" onSubmit={handleSubmit}>
       <label>
         Name:
         <input
